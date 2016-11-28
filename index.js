@@ -7,7 +7,9 @@ process.env.TWILIO_API_SECRET
 process.env.TWILIO_CONFIGURATION_SID
 */
 require('dotenv').load();
-var http = require('http');
+var https = require('https');
+var http = require('http')
+var fs = require('fs')
 var path = require('path');
 var AccessToken = require('twilio').jwt.AccessToken;
 var ConversationsGrant = AccessToken.ConversationsGrant;
@@ -53,9 +55,24 @@ app.get('/token', function(request, response) {
     });
 });
 
-// Create http server and run it
-var server = http.createServer(app);
-var port = process.env.PORT || 3000;
-server.listen(port, function() {
-    console.log('Express server running on *:' + port);
-});
+// Create https server and run it
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+}
+
+https.createServer(options, function (req, res) {
+  res.writeHead(200);
+  res.end("hello world");
+}).listen(4443);
+
+// // Create an HTTP service.
+// http.createServer(app).listen(3000);
+// // Create an HTTPS service identical to the HTTP service.
+// https.createServer(options, app).listen(4443);
+
+// var server = https.createServer(app);
+// var port = process.env.PORT || 4443;
+// server.listen(port, function() {
+//     console.log('Express server running on *:' + port);
+// });
