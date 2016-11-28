@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react');   
 var ReactDOM = window.ReactDOM = require('react-dom');
 var ConversationContainer = require('./conversationContainer.jsx');
 
@@ -14,11 +14,12 @@ if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
 
 $.getJSON('/token', function(data) {
     identity = data.identity;
+    console.log('$.getJSON api data response:', data)
     var accessManager = new Twilio.AccessManager(data.token);
 
     // Check the browser console to see your generated identity. 
     // Send an invite to yourself if you want! 
-    console.log(identity);
+    console.log('this is my identity:', identity);
 
     // Create a Conversations Client and connect to Twilio
     conversationsClient = new Twilio.Conversations.Client(accessManager);
@@ -30,7 +31,7 @@ $.getJSON('/token', function(data) {
 // Successfully connected!
 function clientConnected() {
     document.getElementById('invite-controls').style.display = 'block';
-    log("Connected to Twilio. Listening for incoming Invites as '" + conversationsClient.identity + "'");
+    console.log("Connected to Twilio. Listening for incoming Invites as '" + conversationsClient.identity + "'");
 
     conversationsClient.on('invite', function (invite) {
         log('Incoming invite from: ' + invite.from);
@@ -40,6 +41,7 @@ function clientConnected() {
     // Bind button to create conversation
     document.getElementById('button-invite').onclick = function () {
         var inviteTo = document.getElementById('invite-to').value;
+        console.log('activeConversation', activeConversation)
         if (activeConversation) {
             // Add a participant
             activeConversation.invite(inviteTo);

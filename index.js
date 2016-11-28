@@ -38,6 +38,8 @@ app.get('/token', function(request, response) {
         process.env.TWILIO_API_SECRET
     );
 
+    console.log("token", token)
+
     // Assign the generated identity to the token
     token.identity = identity;
 
