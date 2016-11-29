@@ -29,6 +29,10 @@ Generate an Access Token for a chat application user - it generates a random
 username for the client requesting a token, and takes a device ID as a query
 parameter.
 */
+
+app.get('/', function(req, res){
+    res.send('hello world')
+})
 app.get('/token', function(request, response) {
     var identity = randomUsername();
     
@@ -61,10 +65,9 @@ const options = {
     cert: fs.readFileSync('cert.pem')
 }
 
-https.createServer(options, function (req, res) {
-  res.writeHead(200);
-  res.end("hello world");
-}).listen(4443);
+var server = https.createServer(options, app)
+
+server.listen(4443);
 
 // // Create an HTTP service.
 // http.createServer(app).listen(3000);
